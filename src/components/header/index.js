@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Nav, Logo, NavMenu, Login, UserImg } from "./styles";
 import items from "./items";
 import { auth, provider } from "../../firebase";
@@ -15,7 +15,6 @@ function Header() {
   const dispatch = useDispatch();
   const history = useHistory();
   const userName = useSelector(selectUserName);
-  const userEmail = useSelector(selectUserEmail);
   const userPhoto = useSelector(selectUserPhoto);
 
   const handleAuth = () => {
@@ -28,6 +27,15 @@ function Header() {
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        setUser(user);
+        history.push("/home");
+      }
+    });
+  }, [userName]);
 
   const setUser = (user) => {
     dispatch(

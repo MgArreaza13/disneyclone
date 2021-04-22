@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Nav, Logo, NavMenu, Login, UserImg } from "./styles";
+import {
+  Nav,
+  Logo,
+  NavMenu,
+  Login,
+  UserImg,
+  SignOut,
+  DropDown,
+} from "./styles";
 import items from "./items";
 import { auth, provider } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +17,7 @@ import {
   selectUserEmail,
   selectUserPhoto,
   setUserLoginDetails,
+  setSignOutState,
 } from "../../features/user/userSlice";
 
 function Header() {
@@ -18,14 +27,26 @@ function Header() {
   const userPhoto = useSelector(selectUserPhoto);
 
   const handleAuth = () => {
-    auth
-      .signInWithPopup(provider)
-      .then((result) => {
-        setUser(result.user);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (!userName) {
+      auth
+        .signInWithPopup(provider)
+        .then((result) => {
+          setUser(result.user);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (userName) {
+      auth
+        .signOut()
+        .then(() => {
+          dispatch(setSignOutState());
+          history.push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   useEffect(() => {
@@ -71,7 +92,13 @@ function Header() {
               return <NavItem item={item} key={index} />;
             })}
           </NavMenu>
-          <UserImg src={userPhoto} alt={userName} />
+
+          <SignOut>
+            <UserImg src={userPhoto} alt={userName} />
+            <DropDown>
+              <span onClick={handleAuth}>Sign Out</span>
+            </DropDown>
+          </SignOut>
         </>
       )}
     </Nav>

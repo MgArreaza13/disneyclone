@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import ImgSlider from "../imgSlider";
+import { Container } from "./styles";
 
 function Home() {
   return (
-    <div>
-      Home
-    </div>
-  )
+    <Container>
+      <ImgSlider></ImgSlider>
+    </Container>
+  );
 }
 
-export default Home
+export default Home;

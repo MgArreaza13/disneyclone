@@ -1,7 +1,8 @@
 import React from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+import { Carousel, Wrap } from "./styles";
+import carouselImages from "./carousel";
 
 function ImgSlider() {
   let settings = {
@@ -12,15 +13,23 @@ function ImgSlider() {
     SlidesToScroll: 1,
     autoplay: true,
   };
+
+  const Image = ({ item, key }) => {
+    return (
+      <Wrap>
+        <a href="">
+          <img src={item.path} alt={key} />
+        </a>
+      </Wrap>
+    );
+  };
+
   return (
-    <Slider {...settings}>
-      <div>
-        <h3>1</h3>
-      </div>
-      <div>
-        <h3>2</h3>
-      </div>
-    </Slider>
+    <Carousel {...settings}>
+      {carouselImages.map((image, index) => {
+        return <Image item={image} key={index} />;
+      })}
+    </Carousel>
   );
 }
 

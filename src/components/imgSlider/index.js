@@ -16,7 +16,7 @@ function ImgSlider() {
 
   const Image = ({ item, key }) => {
     return (
-      <Wrap>
+      <Wrap key={key}>
         <a href="">
           <img src={item.path} alt={key} />
         </a>
